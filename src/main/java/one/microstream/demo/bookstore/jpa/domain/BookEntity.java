@@ -1,4 +1,3 @@
-
 package one.microstream.demo.bookstore.jpa.domain;
 
 import javax.money.MonetaryAmount;
@@ -9,173 +8,146 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
 import one.microstream.demo.bookstore.jpa.MoneyConverter;
-
 
 @Entity
 @Table(name = "BOOK")
-public class BookEntity extends BaseEntity
-{
-	@Column(name = "ISBN13")
-	private String isbn13;
+public class BookEntity extends BaseEntity {
 
-	@Column(name = "TITLE")
-	private String title;
+  @Column(name = "ISBN13")
+  private String isbn13;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "AUTHOR_ID")
-	private AuthorEntity author;
+  @Column(name = "TITLE")
+  private String title;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "GENRE_ID")
-	private GenreEntity genre;
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "AUTHOR_ID")
+  private AuthorEntity author;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "PUBLISHER_ID")
-	private PublisherEntity publisher;
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "GENRE_ID")
+  private GenreEntity genre;
 
-	@Column(name = "PURCHASE_PRICE")
-	@Convert(converter = MoneyConverter.class)
-	private MonetaryAmount purchasePrice;
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "PUBLISHER_ID")
+  private PublisherEntity publisher;
 
-	@Column(name = "RETAIL_PRICE")
-	@Convert(converter = MoneyConverter.class)
-	private MonetaryAmount retailPrice;
+  @Column(name = "PURCHASE_PRICE")
+  @Convert(converter = MoneyConverter.class)
+  private MonetaryAmount purchasePrice;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "LANGUAGE_ID")
-	private LanguageEntity language;
+  @Column(name = "RETAIL_PRICE")
+  @Convert(converter = MoneyConverter.class)
+  private MonetaryAmount retailPrice;
 
-	public BookEntity()
-	{
-		super();
-	}
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "LANGUAGE_ID")
+  private LanguageEntity language;
 
-	public BookEntity(
-		final String isbn13,
-		final String title,
-		final AuthorEntity author,
-		final GenreEntity genre,
-		final PublisherEntity publisher,
-		final MonetaryAmount purchasePrice,
-		final MonetaryAmount retailPrice,
-		final LanguageEntity language
-	)
-	{
-		super();
-		this.isbn13        = isbn13;
-		this.title         = title;
-		this.author        = author;
-		this.genre         = genre;
-		this.publisher     = publisher;
-		this.purchasePrice = purchasePrice;
-		this.retailPrice   = retailPrice;
-		this.language      = language;
-	}
+  public BookEntity() {
+    super();
+  }
 
-	public String getIsbn13()
-	{
-		return this.isbn13;
-	}
+  public BookEntity(
+      final String isbn13,
+      final String title,
+      final AuthorEntity author,
+      final GenreEntity genre,
+      final PublisherEntity publisher,
+      final MonetaryAmount purchasePrice,
+      final MonetaryAmount retailPrice,
+      final LanguageEntity language) {
+    super();
+    this.isbn13 = isbn13;
+    this.title = title;
+    this.author = author;
+    this.genre = genre;
+    this.publisher = publisher;
+    this.purchasePrice = purchasePrice;
+    this.retailPrice = retailPrice;
+    this.language = language;
+  }
 
-	public void setIsbn13(
-		final String isbn13
-	)
-	{
-		this.isbn13 = isbn13;
-	}
+  public String getIsbn13() {
+    return this.isbn13;
+  }
 
-	public String getTitle()
-	{
-		return this.title;
-	}
+  public void setIsbn13(final String isbn13) {
+    this.isbn13 = isbn13;
+  }
 
-	public void setTitle(
-		final String noname
-	)
-	{
-		this.title = noname;
-	}
+  public String getTitle() {
+    return this.title;
+  }
 
-	public AuthorEntity getAuthor()
-	{
-		return this.author;
-	}
+  public void setTitle(final String noname) {
+    this.title = noname;
+  }
 
-	public void setAuthor(
-		final AuthorEntity author
-	)
-	{
-		this.author = author;
-	}
+  public AuthorEntity getAuthor() {
+    return this.author;
+  }
 
-	public GenreEntity getGenre()
-	{
-		return this.genre;
-	}
+  public void setAuthor(final AuthorEntity author) {
+    this.author = author;
+  }
 
-	public void setGenre(
-		final GenreEntity genre
-	)
-	{
-		this.genre = genre;
-	}
+  public GenreEntity getGenre() {
+    return this.genre;
+  }
 
-	public PublisherEntity getPublisher()
-	{
-		return this.publisher;
-	}
+  public void setGenre(final GenreEntity genre) {
+    this.genre = genre;
+  }
 
-	public void setPublisher(
-		final PublisherEntity publisher
-	)
-	{
-		this.publisher = publisher;
-	}
+  public PublisherEntity getPublisher() {
+    return this.publisher;
+  }
 
-	public MonetaryAmount getPurchasePrice()
-	{
-		return this.purchasePrice;
-	}
+  public void setPublisher(final PublisherEntity publisher) {
+    this.publisher = publisher;
+  }
 
-	public void setPurchasePrice(
-		final MonetaryAmount purchasePrice
-	)
-	{
-		this.purchasePrice = purchasePrice;
-	}
+  public MonetaryAmount getPurchasePrice() {
+    return this.purchasePrice;
+  }
 
-	public MonetaryAmount getRetailPrice()
-	{
-		return this.retailPrice;
-	}
+  public void setPurchasePrice(final MonetaryAmount purchasePrice) {
+    this.purchasePrice = purchasePrice;
+  }
 
-	public void setRetailPrice(
-		final MonetaryAmount retailPrice
-	)
-	{
-		this.retailPrice = retailPrice;
-	}
+  public MonetaryAmount getRetailPrice() {
+    return this.retailPrice;
+  }
 
-	public LanguageEntity getLanguage()
-	{
-		return this.language;
-	}
+  public void setRetailPrice(final MonetaryAmount retailPrice) {
+    this.retailPrice = retailPrice;
+  }
 
-	public void setLanguage(
-		final LanguageEntity language
-	)
-	{
-		this.language = language;
-	}
+  public LanguageEntity getLanguage() {
+    return this.language;
+  }
 
-	@Override
-	public String toString()
-	{
-		return "BookEntity [title=" + this.title + ", author=" + this.author + ", genre=" + this.genre + ", publisher="
-			+ this.publisher + ", language=" + this.language + ", purchasePrice=" + this.purchasePrice + ", retailPrice="
-			+ this.retailPrice + "]";
-	}
+  public void setLanguage(final LanguageEntity language) {
+    this.language = language;
+  }
 
+  @Override
+  public String toString() {
+    return "BookEntity [title="
+        + this.title
+        + ", author="
+        + this.author
+        + ", genre="
+        + this.genre
+        + ", publisher="
+        + this.publisher
+        + ", language="
+        + this.language
+        + ", purchasePrice="
+        + this.purchasePrice
+        + ", retailPrice="
+        + this.retailPrice
+        + "]";
+  }
 }

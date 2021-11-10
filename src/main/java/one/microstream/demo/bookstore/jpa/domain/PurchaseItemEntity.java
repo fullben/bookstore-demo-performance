@@ -1,4 +1,3 @@
-
 package one.microstream.demo.bookstore.jpa.domain;
 
 import javax.money.MonetaryAmount;
@@ -10,94 +9,72 @@ import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
 import one.microstream.demo.bookstore.jpa.MoneyConverter;
-
 
 @Entity
 @Table(name = "PURCHASEITEM", indexes = @Index(columnList = "PURCHASE_ID"))
-public class PurchaseItemEntity extends BaseEntity
-{
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "BOOK_ID")
-	private BookEntity book;
+public class PurchaseItemEntity extends BaseEntity {
 
-	@Column(name = "AMOUNT")
-	private int amount;
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "BOOK_ID")
+  private BookEntity book;
 
-	@Column(name = "PRICE")
-	@Convert(converter = MoneyConverter.class)
-	private MonetaryAmount price;
+  @Column(name = "AMOUNT")
+  private int amount;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "PURCHASE_ID")
-	private PurchaseEntity purchase;
+  @Column(name = "PRICE")
+  @Convert(converter = MoneyConverter.class)
+  private MonetaryAmount price;
 
-	public PurchaseItemEntity()
-	{
-		super();
-	}
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "PURCHASE_ID")
+  private PurchaseEntity purchase;
 
-	public PurchaseItemEntity(
-		final BookEntity book,
-		final int amount,
-		final MonetaryAmount price,
-		final PurchaseEntity purchase
-	)
-	{
-		super();
-		this.book     = book;
-		this.amount   = amount;
-		this.price    = price;
-		this.purchase = purchase;
-	}
+  public PurchaseItemEntity() {
+    super();
+  }
 
-	public BookEntity getBook()
-	{
-		return this.book;
-	}
+  public PurchaseItemEntity(
+      final BookEntity book,
+      final int amount,
+      final MonetaryAmount price,
+      final PurchaseEntity purchase) {
+    super();
+    this.book = book;
+    this.amount = amount;
+    this.price = price;
+    this.purchase = purchase;
+  }
 
-	public void setBook(
-		final BookEntity book
-	)
-	{
-		this.book = book;
-	}
+  public BookEntity getBook() {
+    return this.book;
+  }
 
-	public int getAmount()
-	{
-		return this.amount;
-	}
+  public void setBook(final BookEntity book) {
+    this.book = book;
+  }
 
-	public void setAmount(
-		final int noname
-	)
-	{
-		this.amount = noname;
-	}
+  public int getAmount() {
+    return this.amount;
+  }
 
-	public MonetaryAmount getPrice()
-	{
-		return this.price;
-	}
+  public void setAmount(final int noname) {
+    this.amount = noname;
+  }
 
-	public void setPrice(
-		final MonetaryAmount price
-	)
-	{
-		this.price = price;
-	}
+  public MonetaryAmount getPrice() {
+    return this.price;
+  }
 
-	public PurchaseEntity getPurchase()
-	{
-		return this.purchase;
-	}
+  public void setPrice(final MonetaryAmount price) {
+    this.price = price;
+  }
 
-	public void setPurchase(
-		final PurchaseEntity purchase
-	)
-	{
-		this.purchase = purchase;
-	}
+  public PurchaseEntity getPurchase() {
+    return this.purchase;
+  }
 
+  public void setPurchase(final PurchaseEntity purchase) {
+    this.purchase = purchase;
+  }
 }

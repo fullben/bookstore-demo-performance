@@ -1,11 +1,9 @@
-
 package one.microstream.demo.bookstore;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Paths;
 import java.util.Locale;
-
 import javax.annotation.PostConstruct;
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
@@ -13,12 +11,6 @@ import javax.money.MonetaryAmount;
 import javax.money.format.AmountFormatQueryBuilder;
 import javax.money.format.MonetaryAmountFormat;
 import javax.money.format.MonetaryFormats;
-
-import org.javamoney.moneta.RoundedMoney;
-import org.javamoney.moneta.format.CurrencyStyle;
-import org.rapidpm.dependencies.core.logger.HasLogger;
-import org.springframework.boot.SpringApplication;
-
 import one.microstream.demo.bookstore.data.Data;
 import one.microstream.demo.bookstore.data.DataMetrics;
 import one.microstream.persistence.binary.jdk8.types.BinaryHandlersJDK8;
@@ -26,164 +18,143 @@ import one.microstream.persistence.types.Storer;
 import one.microstream.storage.embedded.configuration.types.EmbeddedStorageConfiguration;
 import one.microstream.storage.embedded.types.EmbeddedStorageFoundation;
 import one.microstream.storage.embedded.types.EmbeddedStorageManager;
-
+import org.javamoney.moneta.RoundedMoney;
+import org.javamoney.moneta.format.CurrencyStyle;
+import org.rapidpm.dependencies.core.logger.HasLogger;
+import org.springframework.boot.SpringApplication;
 
 /**
- * Central singleton, which holds the {@link EmbeddedStorageManager} and the {@link Data} root object.
- * <p>
- * The demo application simulates a worldwide operating book sales company with stores in many countries.
- * <p>
- * Note: If you start the {@link Application}, which is a {@link SpringApplication},
- * it is created by the {@link ApplicationConfiguration}.
+ * Central singleton, which holds the {@link EmbeddedStorageManager} and the {@link Data} root
+ * object.
+ *
+ * <p>The demo application simulates a worldwide operating book sales company with stores in many
+ * countries.
+ *
+ * <p>Note: If you start the {@link Application}, which is a {@link SpringApplication}, it is
+ * created by the {@link ApplicationConfiguration}.
  *
  * @see #data()
  * @see #storageManager()
- * @see <a href="https://manual.docs.microstream.one/data-store/getting-started">MicroStream Reference Manual</a>
+ * @see <a href="https://manual.docs.microstream.one/data-store/getting-started">MicroStream
+ *     Reference Manual</a>
  */
-public final class BookStoreDemo implements HasLogger
-{
-	private static BookStoreDemo instance;
+public final class BookStoreDemo implements HasLogger {
 
-	/**
-	 * @return the single instance of this class
-	 */
-	public static BookStoreDemo getInstance()
-	{
-		return instance;
-	}
+  private static BookStoreDemo instance;
 
+  /** @return the single instance of this class */
+  public static BookStoreDemo getInstance() {
+    return instance;
+  }
 
-	/**
-	 * {@link CurrencyUnit} for this demo, US Dollar is used as only currency.
-	 */
-	public static final CurrencyUnit         CURRENCY_UNIT          = Monetary.getCurrency(Locale.US);
+  /** {@link CurrencyUnit} for this demo, US Dollar is used as only currency. */
+  public static final CurrencyUnit CURRENCY_UNIT = Monetary.getCurrency(Locale.US);
 
-	/**
-	 * Money format
-	 */
-	public final static MonetaryAmountFormat MONETARY_AMOUNT_FORMAT = MonetaryFormats.getAmountFormat(
-		AmountFormatQueryBuilder.of(Locale.getDefault())
-			.set(CurrencyStyle.SYMBOL)
-			.build()
-	);
+  /** Money format */
+  public static final MonetaryAmountFormat MONETARY_AMOUNT_FORMAT =
+      MonetaryFormats.getAmountFormat(
+          AmountFormatQueryBuilder.of(Locale.getDefault()).set(CurrencyStyle.SYMBOL).build());
 
-	/**
-	 * Multiplicant used to calculate retail prices, adds an 11% margin.
-	 */
-	private final static BigDecimal           RETAIL_MULTIPLICANT    = scale(new BigDecimal(1.11));
+  /** Multiplicant used to calculate retail prices, adds an 11% margin. */
+  private static final BigDecimal RETAIL_MULTIPLICANT = scale(new BigDecimal(1.11));
 
+  private static BigDecimal scale(final BigDecimal number) {
+    return number.setScale(2, RoundingMode.HALF_UP);
+  }
 
-	private static BigDecimal scale(final BigDecimal number)
-	{
-		return number.setScale(2, RoundingMode.HALF_UP);
-	}
+  /**
+   * Converts a double into a {@link MonetaryAmount}
+   *
+   * @param number the number to convert
+   * @return the converted {@link MonetaryAmount}
+   */
+  public static MonetaryAmount money(final double number) {
+    return money(new BigDecimal(number));
+  }
 
-	/**
-	 * Converts a double into a {@link MonetaryAmount}
-	 * @param number the number to convert
-	 * @return the converted {@link MonetaryAmount}
-	 */
-	public static MonetaryAmount money(final double number)
-	{
-		return money(new BigDecimal(number));
-	}
+  /**
+   * Converts a {@link BigDecimal} into a {@link MonetaryAmount}
+   *
+   * @param number the number to convert
+   * @return the converted {@link MonetaryAmount}
+   */
+  public static MonetaryAmount money(final BigDecimal number) {
+    return RoundedMoney.of(scale(number), CURRENCY_UNIT);
+  }
 
-	/**
-	 * Converts a {@link BigDecimal} into a {@link MonetaryAmount}
-	 * @param number the number to convert
-	 * @return the converted {@link MonetaryAmount}
-	 */
-	public static MonetaryAmount money(final BigDecimal number)
-	{
-		return RoundedMoney.of(scale(number), CURRENCY_UNIT);
-	}
+  /**
+   * Calculates the retail price based on a purchase price by adding a margin.
+   *
+   * @param purchasePrice the purchase price
+   * @return the calculated retail price
+   * @see #RETAIL_MULTIPLICANT
+   */
+  public static MonetaryAmount retailPrice(final MonetaryAmount purchasePrice) {
+    return money(
+        RETAIL_MULTIPLICANT.multiply(new BigDecimal(purchasePrice.getNumber().doubleValue())));
+  }
 
-	/**
-	 * Calculates the retail price based on a purchase price by adding a margin.
-	 * @param purchasePrice the purchase price
-	 * @return the calculated retail price
-	 * @see #RETAIL_MULTIPLICANT
-	 */
-	public static MonetaryAmount retailPrice(
-		final MonetaryAmount purchasePrice
-	)
-	{
-		return money(RETAIL_MULTIPLICANT.multiply(new BigDecimal(purchasePrice.getNumber().doubleValue())));
-	}
+  private final DemoConfiguration demoConfiguration;
+  private EmbeddedStorageManager storageManager;
 
+  public BookStoreDemo(final DemoConfiguration demoConfiguration) {
+    super();
 
-	private final DemoConfiguration demoConfiguration;
-	private EmbeddedStorageManager  storageManager;
+    this.demoConfiguration = demoConfiguration;
+  }
 
-	public BookStoreDemo(final DemoConfiguration demoConfiguration)
-	{
-		super();
+  @PostConstruct
+  void postConstruct() {
+    BookStoreDemo.instance = this;
+  }
 
-		this.demoConfiguration = demoConfiguration;
-	}
+  public DemoConfiguration getDemoConfiguration() {
+    return this.demoConfiguration;
+  }
 
-	@PostConstruct
-	void postConstruct()
-	{
-		BookStoreDemo.instance = this;
-	}
+  public EmbeddedStorageManager storageManager() {
+    if (this.storageManager == null) {
+      this.logger().info("Initializing MicroStream StorageManager");
 
-	public DemoConfiguration getDemoConfiguration()
-	{
-		return this.demoConfiguration;
-	}
+      final EmbeddedStorageFoundation<?> foundation =
+          EmbeddedStorageConfiguration.Builder()
+              .setStorageDirectory(
+                  Paths.get(this.demoConfiguration.dataDir(), "microstream").toString())
+              .setChannelCount(
+                  Integer.highestOneBit(Runtime.getRuntime().availableProcessors() - 1))
+              .createEmbeddedStorageFoundation();
 
-	public EmbeddedStorageManager storageManager()
-	{
-		if(this.storageManager == null)
-		{
-			this.logger().info("Initializing MicroStream StorageManager");
+      foundation.onConnectionFoundation(BinaryHandlersJDK8::registerJDK8TypeHandlers);
+      this.storageManager = foundation.createEmbeddedStorageManager().start();
 
-			final EmbeddedStorageFoundation<?> foundation = EmbeddedStorageConfiguration.Builder()
-				.setStorageDirectory(Paths.get(this.demoConfiguration.dataDir(), "microstream").toString())
-				.setChannelCount(Integer.highestOneBit(Runtime.getRuntime().availableProcessors() - 1))
-				.createEmbeddedStorageFoundation()
-			;
+      if (this.storageManager.root() == null) {
+        this.logger().info("No data found, initializing random data");
 
-			foundation.onConnectionFoundation(BinaryHandlersJDK8::registerJDK8TypeHandlers);
-			this.storageManager = foundation.createEmbeddedStorageManager().start();
+        final Data data = new Data();
+        this.storageManager.setRoot(data);
+        this.storageManager.storeRoot();
+        final DataMetrics metrics =
+            data.populate(this.demoConfiguration.initialDataAmount(), this.storageManager);
 
-			if(this.storageManager.root() == null)
-			{
-				this.logger().info("No data found, initializing random data");
+        this.logger().info("Random data generated: " + metrics.toString());
+      }
+    }
 
-				final Data data = new Data();
-				this.storageManager.setRoot(data);
-				this.storageManager.storeRoot();
-				final DataMetrics metrics = data.populate(
-					this.demoConfiguration.initialDataAmount(),
-					this.storageManager
-				);
+    return this.storageManager;
+  }
 
-				this.logger().info("Random data generated: " + metrics.toString());
-			}
-		}
+  public Storer createStorer() {
+    return this.storageManager().createStorer();
+  }
 
-		return this.storageManager;
-	}
+  public Data data() {
+    return (Data) this.storageManager().root();
+  }
 
-	public Storer createStorer()
-	{
-		return this.storageManager().createStorer();
-	}
-
-	public Data data()
-	{
-		return (Data)this.storageManager().root();
-	}
-
-	public void shutdown()
-	{
-		if(this.storageManager != null)
-		{
-			this.storageManager.shutdown();
-			this.storageManager = null;
-		}
-	}
-
+  public void shutdown() {
+    if (this.storageManager != null) {
+      this.storageManager.shutdown();
+      this.storageManager = null;
+    }
+  }
 }
