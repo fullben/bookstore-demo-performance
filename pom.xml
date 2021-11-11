@@ -147,6 +147,11 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>2.4.4</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -161,6 +166,14 @@
 					<wait>500</wait>
 					<maxAttempts>240</maxAttempts>
 					<mainClass>one.microstream.demo.bookstore.Application</mainClass>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>10</source>
+					<target>10</target>
 				</configuration>
 			</plugin>
 		</plugins>
