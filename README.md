@@ -5,6 +5,8 @@
 With this demo the superior performance of MicroStream and the Java VM compared to JPA with a connected database is visualized.
 It is a Spring Boot application with a Vaadin frontend. Per default Postgres is used, but you can change the application's setup, to use any other database.
 
+This derivation from the original implementation by the MicroStream devs includes an extension for evaluating the performance using a REST API and [JMeter](https://jmeter.apache.org/). The documentation for this part of the project is available in a dedicated [README](README_EXTENSION.md) file.
+
 ## Setup
 
 - First you need to setup a Postgres database. Then the connection settings must be adjusted in the [application.properties](src/main/resources/application.properties) file accordingly.
