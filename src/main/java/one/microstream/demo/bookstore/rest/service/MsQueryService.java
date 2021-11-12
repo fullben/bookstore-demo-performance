@@ -57,7 +57,7 @@ public class MsQueryService extends BaseQueryService {
   @Override
   public Collection<BookRepresentation> booksByTitleAndCountry(String title, String country) {
     return data.books().searchByTitle(title).stream()
-        .filter(book -> book.author().address().city().state().country().name().equals(country))
+        .filter(book -> book.author().address().city().state().country().code().equals(country))
         .map(b -> map(b, BookRepresentation.class))
         .collect(Collectors.toList());
   }
@@ -92,7 +92,7 @@ public class MsQueryService extends BaseQueryService {
   public Collection<BookRepresentation> bestsellers(String country, int year) {
     Country c = getCountry(country);
     return data.purchases().bestSellerList(year, c).stream()
-        .map(b -> map(b, BookRepresentation.class))
+        .map(b -> map(b.book(), BookRepresentation.class))
         .collect(Collectors.toList());
   }
 

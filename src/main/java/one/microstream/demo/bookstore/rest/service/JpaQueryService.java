@@ -84,7 +84,12 @@ public class JpaQueryService extends BaseQueryService {
   @Transactional(readOnly = true)
   @Override
   public double revenueOfShop(String shopName, int year) {
-    ShopEntity shop = repositories.shopRepository().findByName(shopName).orElseThrow();
+    ShopEntity shop =
+        repositories
+            .shopRepository()
+            .findByName(shopName)
+            .orElseThrow(
+                () -> new IllegalArgumentException("No shop with name: \"" + shopName + "\""));
     return repositories.purchaseItemRepository().revenueOfShopInYear(shop, year);
   }
 
@@ -92,7 +97,7 @@ public class JpaQueryService extends BaseQueryService {
   @Override
   public Collection<BookRepresentation> bestsellers(String country, int year) {
     return repositories.purchaseItemRepository().bestSellerList(year, getCountry(country)).stream()
-        .map(b -> map(b, BookRepresentation.class))
+        .map(b -> map(b.book(), BookRepresentation.class))
         .collect(Collectors.toList());
   }
 
@@ -101,7 +106,7 @@ public class JpaQueryService extends BaseQueryService {
   public EmployeeRepresentation employeeOfTheYear(int year, String country) {
     EmployeeEntity employee =
         repositories.employeeRepository().employeeOfTheYear(year, getCountry(country).getId());
-    return map(employee, EmployeeRepresentation.class);
+    return employee == null ? null : map(employee, EmployeeRepresentation.class);
   }
 
   @Transactional(readOnly = true)
