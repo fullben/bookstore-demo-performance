@@ -133,6 +133,12 @@ public class RandomDataGenerator implements HasLogger {
 
     System.gc();
 
+    this.logger()
+        .info(
+            "Generated {} countries, {} shops, and {} books",
+            metrics.countryCount(),
+            metrics.shopCount(),
+            metrics.bookCount());
     return metrics;
   }
 
