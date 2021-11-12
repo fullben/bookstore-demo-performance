@@ -14,7 +14,7 @@ public interface QueryService {
 
   Collection<BookRepresentation> booksInPriceRange(double min, double max);
 
-  double revenueOfShop(long shopId, int year);
+  double revenueOfShop(String shopName, int year);
 
   Collection<BookRepresentation> bestsellers(String country, int year);
 

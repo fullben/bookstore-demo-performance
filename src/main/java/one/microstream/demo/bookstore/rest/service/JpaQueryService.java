@@ -59,7 +59,7 @@ public class JpaQueryService extends BaseQueryService {
   @Override
   public Collection<BookRepresentation> booksByTitleAndCountry(String title, String country) {
     CountryEntity countryEntity =
-        repositories.countryRepository().findByName(country).orElseThrow();
+        repositories.countryRepository().findByCode(country).orElseThrow();
     return repositories
         .bookRepository()
         .findByTitleLikeAndAuthorAddressCityStateCountry(title, countryEntity)
@@ -83,8 +83,8 @@ public class JpaQueryService extends BaseQueryService {
 
   @Transactional(readOnly = true)
   @Override
-  public double revenueOfShop(long shopId, int year) {
-    ShopEntity shop = repositories.shopRepository().findById(shopId).orElseThrow();
+  public double revenueOfShop(String shopName, int year) {
+    ShopEntity shop = repositories.shopRepository().findByName(shopName).orElseThrow();
     return repositories.purchaseItemRepository().revenueOfShopInYear(shop, year);
   }
 

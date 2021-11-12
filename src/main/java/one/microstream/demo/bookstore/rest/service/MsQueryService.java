@@ -79,8 +79,11 @@ public class MsQueryService extends BaseQueryService {
   }
 
   @Override
-  public double revenueOfShop(long shopId, int year) {
-    final Shop shop = data.shops().compute(shops -> shops.skip(shopId).findFirst().orElseThrow());
+  public double revenueOfShop(String shopName, int year) {
+    final Shop shop = data.shops().ofName(shopName);
+    if (shop == null) {
+      throw new IllegalArgumentException();
+    }
     MonetaryAmount revenue = data.purchases().revenueOfShopInYear(shop, year);
     return deriveDouble(revenue);
   }

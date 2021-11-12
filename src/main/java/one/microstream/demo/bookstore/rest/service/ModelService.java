@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import one.microstream.demo.bookstore.BookStoreDemo;
 import one.microstream.demo.bookstore.data.Data;
+import one.microstream.demo.bookstore.data.Shop;
+import one.microstream.demo.bookstore.rest.data.transfer.CustomerMetadataRepresentation;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -44,5 +46,20 @@ public class ModelService {
       years.add(i);
     }
     return years;
+  }
+
+  public CustomerMetadataRepresentation getCustomerMetadata(int pageSize) {
+    if (pageSize < 1) {
+      throw new IllegalArgumentException();
+    }
+    CustomerMetadataRepresentation metaData = new CustomerMetadataRepresentation();
+    metaData.setTotal(data.customers().customerCount());
+    metaData.setPageSize(pageSize);
+    metaData.setPageCount((int) Math.ceil((double) data.customers().customerCount() / pageSize));
+    return metaData;
+  }
+
+  public List<String> getAllShopNames() {
+    return data.shops().all().stream().map(Shop::name).collect(Collectors.toList());
   }
 }

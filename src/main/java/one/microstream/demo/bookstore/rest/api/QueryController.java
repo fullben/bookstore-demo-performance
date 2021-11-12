@@ -1,13 +1,13 @@
 package one.microstream.demo.bookstore.rest.api;
 
 import java.util.Collection;
-import one.microstream.demo.bookstore.rest.service.JpaQueryService;
-import one.microstream.demo.bookstore.rest.service.MsQueryService;
-import one.microstream.demo.bookstore.rest.service.QueryService;
 import one.microstream.demo.bookstore.rest.data.transfer.BookRepresentation;
 import one.microstream.demo.bookstore.rest.data.transfer.CustomerRepresentation;
 import one.microstream.demo.bookstore.rest.data.transfer.EmployeeRepresentation;
 import one.microstream.demo.bookstore.rest.data.transfer.PurchaseRepresentation;
+import one.microstream.demo.bookstore.rest.service.JpaQueryService;
+import one.microstream.demo.bookstore.rest.service.MsQueryService;
+import one.microstream.demo.bookstore.rest.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,16 +30,14 @@ public class QueryController {
     this.jpaQueryService = jpaQueryService;
   }
 
-  @GetMapping(value = "queries/customers-paged", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @GetMapping(value = "queries/customers-page", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public Collection<CustomerRepresentation> customersPaged(
       @RequestParam(name = "mode", required = false, defaultValue = "ms") String mode,
       @RequestParam(name = "page") int page) {
     return queryService(mode).customersPaged(page);
   }
 
-  @GetMapping(
-      value = "queries/books-by-title-and-country",
-      produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @GetMapping(value = "queries/books-by-title", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public Collection<BookRepresentation> booksByTitleAndCountry(
       @RequestParam(name = "mode", required = false, defaultValue = "ms") String mode,
       @RequestParam(name = "title") String title,
@@ -60,9 +58,9 @@ public class QueryController {
   @GetMapping(value = "queries/shop-revenue", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public double revenueOfShopInYear(
       @RequestParam(name = "mode", required = false, defaultValue = "ms") String mode,
-      @RequestParam(name = "shopId") int shopId,
+      @RequestParam(name = "shop") String shopName,
       @RequestParam(name = "year") int year) {
-    return queryService(mode).revenueOfShop(shopId, year);
+    return queryService(mode).revenueOfShop(shopName, year);
   }
 
   @GetMapping(value = "queries/bestsellers", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
