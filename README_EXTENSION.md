@@ -22,7 +22,8 @@ In order to achieve this, the script has various configuration properties, defin
 * `server.protocol`: The protocol of the targeted server, usually either `http` or `https`.
 * `query.mode`: The persistence implementation to be used for the queries, `ms` for MicroStream, `jpa` for JPA
 * `query.duration`: The duration for which queries will be executed in seconds.
+* `query.clients`: The number of threads used for executing queries.
 
-Open a terminal and execute the command `jmeter -n -t client-script.jmx -l results.jtl` to run the test in JMeter's CLI-mode. This will execute the testplan defined in `client-script.jmx`. The results will be written as CSV data to the `results.jtl` file.
+Open a terminal and execute the command `jmeter -Jsample_variables=rduration -n -t client-script.jmx -l results.jtl` to run the test in JMeter's CLI-mode. This will execute the testplan defined in `client-script.jmx`. The results will be written as CSV data to the `results.jtl` file.
 
 Once the test has been completed, you can use the `jmeter -g results.jtl -o ./report` command to automatically create a report from the test results. The report will be placed in the `report` directory. Be aware that the `jmeter.reportgenerator.exporter.html.series_filter` property in the `user.properties` file defines which requests will be considered for the report.
