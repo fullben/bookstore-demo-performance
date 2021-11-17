@@ -67,12 +67,12 @@ public class JpaQueryService extends BaseQueryService {
 
   @Transactional(readOnly = true)
   @Override
-  public Collection<BookRepresentation> booksByTitleAndCountry(String title, String country) {
+  public Collection<BookRepresentation> booksByTitleAndCountry(String title, String countryCode) {
     CountryEntity countryEntity =
         repositories
             .countryRepository()
-            .findByCode(country)
-            .orElseThrow(() -> new IllegalArgumentException("No country for code: " + country));
+            .findByCode(countryCode)
+            .orElseThrow(() -> new IllegalArgumentException("No country for code: " + countryCode));
     return repositories
         .bookRepository()
         .findByTitleLikeAndAuthorAddressCityStateCountry(title, countryEntity)
@@ -108,35 +108,38 @@ public class JpaQueryService extends BaseQueryService {
 
   @Transactional(readOnly = true)
   @Override
-  public Collection<BookSalesRepresentation> bookSales(String country, int year) {
-    return repositories.purchaseItemRepository().bestSellerList(year, getCountry(country)).stream()
+  public Collection<BookSalesRepresentation> bookSales(String countryCode, int year) {
+    return repositories
+        .purchaseItemRepository()
+        .bestSellerList(year, getCountry(countryCode))
+        .stream()
         .map(sales -> map(sales, BookSalesRepresentation.class))
         .collect(Collectors.toList());
   }
 
   @Transactional(readOnly = true)
   @Override
-  public EmployeeRepresentation employeeOfTheYear(int year, String country) {
+  public EmployeeRepresentation employeeOfTheYear(int year, String countryCode) {
     EmployeeEntity employee =
-        repositories.employeeRepository().employeeOfTheYear(year, getCountry(country).getId());
+        repositories.employeeRepository().employeeOfTheYear(year, getCountry(countryCode).getId());
     return employee == null ? null : map(employee, EmployeeRepresentation.class);
   }
 
   @Transactional(readOnly = true)
   @Override
-  public Collection<PurchaseRepresentation> purchasesOfForeigners(String country, int year) {
+  public Collection<PurchaseRepresentation> purchasesOfForeigners(String countryCode, int year) {
     return repositories
         .purchaseRepository()
-        .findPurchasesOfForeigners(year, getCountry(country))
+        .findPurchasesOfForeigners(year, getCountry(countryCode))
         .stream()
         .map(p -> map(p, PurchaseRepresentation.class))
         .collect(Collectors.toList());
   }
 
-  private CountryEntity getCountry(String country) {
+  private CountryEntity getCountry(String countryCode) {
     return repositories
         .countryRepository()
-        .findByCode(country.toUpperCase(Locale.ROOT))
-        .orElseThrow(() -> new IllegalArgumentException("No country for code: " + country));
+        .findByCode(countryCode.toUpperCase(Locale.ROOT))
+        .orElseThrow(() -> new IllegalArgumentException("No country for code: " + countryCode));
   }
 }

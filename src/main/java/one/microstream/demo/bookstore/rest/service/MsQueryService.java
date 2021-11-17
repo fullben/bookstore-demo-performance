@@ -67,9 +67,9 @@ public class MsQueryService extends BaseQueryService {
   }
 
   @Override
-  public Collection<BookRepresentation> booksByTitleAndCountry(String title, String country) {
+  public Collection<BookRepresentation> booksByTitleAndCountry(String title, String countryCode) {
     return data.books().searchByTitle(title).stream()
-        .filter(book -> book.author().address().city().state().country().code().equals(country))
+        .filter(book -> book.author().address().city().state().country().code().equals(countryCode))
         .map(b -> map(b, BookRepresentation.class))
         .collect(Collectors.toList());
   }
@@ -101,28 +101,28 @@ public class MsQueryService extends BaseQueryService {
   }
 
   @Override
-  public Collection<BookSalesRepresentation> bookSales(String country, int year) {
-    Country c = getCountry(country);
+  public Collection<BookSalesRepresentation> bookSales(String countryCode, int year) {
+    Country c = getCountry(countryCode);
     return data.purchases().bestSellerList(year, c).stream()
         .map(b -> map(b, BookSalesRepresentation.class))
         .collect(Collectors.toList());
   }
 
   @Override
-  public EmployeeRepresentation employeeOfTheYear(int year, String country) {
-    Employee employeeOfTheYear = data.purchases().employeeOfTheYear(year, getCountry(country));
+  public EmployeeRepresentation employeeOfTheYear(int year, String countryCode) {
+    Employee employeeOfTheYear = data.purchases().employeeOfTheYear(year, getCountry(countryCode));
     return map(employeeOfTheYear, EmployeeRepresentation.class);
   }
 
   @Override
-  public Collection<PurchaseRepresentation> purchasesOfForeigners(String country, int year) {
-    return data.purchases().purchasesOfForeigners(year, getCountry(country)).stream()
+  public Collection<PurchaseRepresentation> purchasesOfForeigners(String countryCode, int year) {
+    return data.purchases().purchasesOfForeigners(year, getCountry(countryCode)).stream()
         .map(p -> map(p, PurchaseRepresentation.class))
         .collect(Collectors.toList());
   }
 
-  private Country getCountry(String country) {
-    String code = country.toUpperCase(Locale.ROOT);
+  private Country getCountry(String countryCode) {
+    String code = countryCode.toUpperCase(Locale.ROOT);
     return data.shops()
         .compute(
             shops ->
@@ -131,6 +131,6 @@ public class MsQueryService extends BaseQueryService {
                     .filter(c -> c.code().equals(code))
                     .findAny()
                     .orElseThrow(
-                        () -> new IllegalArgumentException("No country for code: " + country)));
+                        () -> new IllegalArgumentException("No country for code: " + countryCode)));
   }
 }
