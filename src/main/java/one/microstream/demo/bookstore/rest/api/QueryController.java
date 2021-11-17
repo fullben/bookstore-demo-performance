@@ -11,6 +11,7 @@ import one.microstream.demo.bookstore.rest.service.MsQueryService;
 import one.microstream.demo.bookstore.rest.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,67 +38,88 @@ public class QueryController {
   }
 
   @GetMapping(value = "queries/customers-page", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public Collection<CustomerRepresentation> customersPaged(
+  public ResponseEntity<Collection<CustomerRepresentation>> customersPaged(
       @RequestParam(name = "mode", required = false, defaultValue = "ms") String mode,
       @RequestParam(name = "page") int page) {
-    return queryService(mode).customersPaged(page);
+    final QueryService queryService = selectQueryService(mode);
+    return ApiResponse.ok()
+        .withDurationHeader()
+        .toResponseEntity(() -> queryService.customersPaged(page));
   }
 
   @GetMapping(value = "queries/books-by-title", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public Collection<BookRepresentation> booksByTitleAndCountry(
+  public ResponseEntity<Collection<BookRepresentation>> booksByTitleAndCountry(
       @RequestParam(name = "mode", required = false, defaultValue = "ms") String mode,
       @RequestParam(name = "title") String title,
       @RequestParam(name = "country") String country) {
-    return queryService(mode).booksByTitleAndCountry(title, country);
+    final QueryService queryService = selectQueryService(mode);
+    return ApiResponse.ok()
+        .withDurationHeader()
+        .toResponseEntity(() -> queryService.booksByTitleAndCountry(title, country));
   }
 
   @GetMapping(
       value = "queries/books-in-price-range",
       produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public Collection<BookRepresentation> booksInPriceRange(
+  public ResponseEntity<Collection<BookRepresentation>> booksInPriceRange(
       @RequestParam(name = "mode", required = false, defaultValue = "ms") String mode,
       @RequestParam(name = "min") int min,
       @RequestParam(name = "max") int max) {
-    return queryService(mode).booksInPriceRange(min, max);
+    final QueryService queryService = selectQueryService(mode);
+    return ApiResponse.ok()
+        .withDurationHeader()
+        .toResponseEntity(() -> queryService.booksInPriceRange(min, max));
   }
 
   @GetMapping(value = "queries/shop-revenue", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public double revenueOfShopInYear(
+  public ResponseEntity<Double> revenueOfShopInYear(
       @RequestParam(name = "mode", required = false, defaultValue = "ms") String mode,
       @RequestParam(name = "shop") String shopName,
       @RequestParam(name = "year") int year) {
-    return queryService(mode).revenueOfShop(shopName, year);
+    final QueryService queryService = selectQueryService(mode);
+    return ApiResponse.ok()
+        .withDurationHeader()
+        .toResponseEntity(() -> queryService.revenueOfShop(shopName, year));
   }
 
   @GetMapping(value = "queries/book-sales", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public Collection<BookSalesRepresentation> bookSalesForYearAndCountry(
+  public ResponseEntity<Collection<BookSalesRepresentation>> bookSalesForYearAndCountry(
       @RequestParam(name = "mode", required = false, defaultValue = "ms") String mode,
       @RequestParam(name = "country") String country,
       @RequestParam(name = "year") int year) {
-    return queryService(mode).bookSales(country, year);
+    final QueryService queryService = selectQueryService(mode);
+    return ApiResponse.ok()
+        .withDurationHeader()
+        .toResponseEntity(() -> queryService.bookSales(country, year));
   }
 
   @GetMapping(
       value = "queries/employee-of-the-year",
       produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public EmployeeRepresentation employeeOfTheYearInCountry(
+  public ResponseEntity<EmployeeRepresentation> employeeOfTheYearInCountry(
       @RequestParam(name = "mode", required = false, defaultValue = "ms") String mode,
       @RequestParam(name = "year") int year,
       @RequestParam(name = "country") String country) {
-    return queryService(mode).employeeOfTheYear(year, country);
+    final QueryService queryService = selectQueryService(mode);
+    return ApiResponse.ok()
+        .withDurationHeader()
+        .toResponseEntity(() -> queryService.employeeOfTheYear(year, country));
   }
 
   @GetMapping(
       value = "queries/foreigner-purchases",
       produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public Collection<PurchaseRepresentation> purchasesOfForeignersInCountryAndYear(
+  public ResponseEntity<Collection<PurchaseRepresentation>> purchasesOfForeignersInCountryAndYear(
       @RequestParam(name = "mode", required = false, defaultValue = "ms") String mode,
       @RequestParam(name = "country") String country,
       @RequestParam(name = "year") int year) {
-    return queryService(mode).purchasesOfForeigners(country, year);
+    final QueryService queryService = selectQueryService(mode);
+    return ApiResponse.ok()
+        .withDurationHeader()
+        .toResponseEntity(() -> queryService.purchasesOfForeigners(country, year));
   }
 
-  private QueryService queryService(String mode) {
+  private QueryService selectQueryService(String mode) {
     requireValidMode(mode);
     if (isMsMode(mode)) {
       return msQueryService;
