@@ -51,7 +51,7 @@
             </elementProp>
             <elementProp name="query.duration" elementType="Argument">
               <stringProp name="Argument.name">query.duration</stringProp>
-              <stringProp name="Argument.value">30</stringProp>
+              <stringProp name="Argument.value">1800</stringProp>
               <stringProp name="Argument.desc">Duration (in seconds) for which queries will be executed</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
