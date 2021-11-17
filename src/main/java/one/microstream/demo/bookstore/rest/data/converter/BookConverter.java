@@ -14,6 +14,7 @@ public class BookConverter implements Converter<Book, BookRepresentation> {
 
   public static BookRepresentation toRepresentation(Book b) {
     BookRepresentation r = new BookRepresentation();
+    r.setTitle(b.title());
     r.setAuthor(b.author().name());
     r.setGenre(b.genre().name());
     r.setIsbn13(b.isbn13());

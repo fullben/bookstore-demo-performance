@@ -14,6 +14,7 @@ public class BookEntityConverter implements Converter<BookEntity, BookRepresenta
 
   public static BookRepresentation toRepresentation(BookEntity e) {
     BookRepresentation r = new BookRepresentation();
+    r.setTitle(e.getTitle());
     r.setAuthor(e.getAuthor().getName());
     r.setGenre(e.getGenre().getName());
     r.setIsbn13(e.getIsbn13());
