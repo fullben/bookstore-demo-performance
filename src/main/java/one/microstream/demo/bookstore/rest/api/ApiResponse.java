@@ -51,7 +51,7 @@ public class ApiResponse {
         T value = task.get();
         long end = System.nanoTime();
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set(REQUEST_PROCESSING_NANOS_HEADER_NAME, "" + (end - start));
+        responseHeaders.set(REQUEST_PROCESSING_NANOS_HEADER_NAME, String.valueOf(end - start));
         return ResponseEntity.status(status).headers(responseHeaders).body(value);
       } else {
         return ResponseEntity.status(status).body(task.get());
