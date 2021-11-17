@@ -2,9 +2,14 @@
 
 This project consists of an extended version of the performance demo implementation provided by the MicroStream developers. This implementation remains unchanged, except for an extension which provides access to the queries used for evaluating the performance by means of a REST API. A [JMeter](https://jmeter.apache.org/) script for automatically executing the queries has also been included.
 
+## Structure
+
+All modifications to the Spring Boot application are implemented in the `one.microstream.demo.bookstore.rest` package and subpackages thereof.
+The directory `client-script` contains the relevant JMeter files. A `Dockerfile` for containerizing the application and a corresponding `docker-compose` file can be found in the root directory of the project.
+
 ## Setup and Usage
 
-- First, you need to set up and run the application as instructed in the main `README` file. Note that you can define the amount of data to be used by the application by setting the `bookstoredemo.initialDataAmount` property in the `application.properties` file.
+- First, you need to set up and run the application as instructed in the main `README` file. Note that you can define the amount of data to be used by the application by setting the `bookstoredemo.initialDataAmount` property in the `application.properties` file or adjusting the value of the matching environment variable in the `docker-compose.yml` file.
 - Following this, you may launch JMeter and use the `client-script/client-script.jmx`
 
 ### JMeter Script

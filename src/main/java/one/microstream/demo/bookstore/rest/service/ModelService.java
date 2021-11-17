@@ -8,15 +8,23 @@ import one.microstream.demo.bookstore.BookStoreDemo;
 import one.microstream.demo.bookstore.data.Data;
 import one.microstream.demo.bookstore.data.Shop;
 import one.microstream.demo.bookstore.rest.data.transfer.CustomerMetadataRepresentation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service that uses MicroStream-based persistence to provide certain specific collections of values
+ * and values that are necessary for determining the valid value ranges for the parameters of the
+ * methods offered by {@link QueryService} implementations maintaining the same data in their
+ * backing persistence solutions.
+ */
 @Service
 public class ModelService {
 
   private final Data data;
 
-  public ModelService() {
-    this.data = BookStoreDemo.getInstance().data();
+  @Autowired
+  public ModelService(BookStoreDemo bookStoreDemo) {
+    this.data = bookStoreDemo.data();
   }
 
   public List<String> getAllCountryNames() {

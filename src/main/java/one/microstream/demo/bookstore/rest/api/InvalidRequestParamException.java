@@ -1,5 +1,10 @@
 package one.microstream.demo.bookstore.rest.api;
 
+/**
+ * Thrown whenever an API endpoint encounters an invalid value for an expected parameter.
+ *
+ * @author Benedikt Full
+ */
 public class InvalidRequestParamException extends RuntimeException {
 
   static final long serialVersionUID = 1L;

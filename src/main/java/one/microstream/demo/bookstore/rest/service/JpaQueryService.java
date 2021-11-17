@@ -10,10 +10,12 @@ import one.microstream.demo.bookstore.jpa.domain.EmployeeEntity;
 import one.microstream.demo.bookstore.jpa.domain.ShopEntity;
 import one.microstream.demo.bookstore.rest.data.converter.AddressEntityConverter;
 import one.microstream.demo.bookstore.rest.data.converter.BookEntityConverter;
+import one.microstream.demo.bookstore.rest.data.converter.BookSalesEntityConverter;
 import one.microstream.demo.bookstore.rest.data.converter.CustomerEntityConverter;
 import one.microstream.demo.bookstore.rest.data.converter.EmployeeEntityConverter;
 import one.microstream.demo.bookstore.rest.data.converter.PurchaseEntityConverter;
 import one.microstream.demo.bookstore.rest.data.transfer.BookRepresentation;
+import one.microstream.demo.bookstore.rest.data.transfer.BookSalesRepresentation;
 import one.microstream.demo.bookstore.rest.data.transfer.CustomerRepresentation;
 import one.microstream.demo.bookstore.rest.data.transfer.EmployeeRepresentation;
 import one.microstream.demo.bookstore.rest.data.transfer.PurchaseRepresentation;
@@ -23,6 +25,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * {@link QueryService} implementation that uses JPA-based persistence as backing persistence
+ * approach.
+ *
+ * @see MsQueryService
+ * @author Benedikt Full
+ */
 @Service
 public class JpaQueryService extends BaseQueryService {
 
@@ -38,6 +47,7 @@ public class JpaQueryService extends BaseQueryService {
   ModelMapper configureModelMapper(ModelMapper mapper) {
     mapper.addConverter(new AddressEntityConverter());
     mapper.addConverter(new BookEntityConverter());
+    mapper.addConverter(new BookSalesEntityConverter());
     mapper.addConverter(new CustomerEntityConverter());
     mapper.addConverter(new EmployeeEntityConverter());
     mapper.addConverter(new PurchaseEntityConverter());
@@ -98,9 +108,9 @@ public class JpaQueryService extends BaseQueryService {
 
   @Transactional(readOnly = true)
   @Override
-  public Collection<BookRepresentation> bestsellers(String country, int year) {
+  public Collection<BookSalesRepresentation> bookSales(String country, int year) {
     return repositories.purchaseItemRepository().bestSellerList(year, getCountry(country)).stream()
-        .map(b -> map(b.book(), BookRepresentation.class))
+        .map(sales -> map(sales, BookSalesRepresentation.class))
         .collect(Collectors.toList());
   }
 

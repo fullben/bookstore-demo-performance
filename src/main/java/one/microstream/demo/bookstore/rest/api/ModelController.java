@@ -11,6 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller managing the API endpoints providing access to data (primarily metadata) necessary for
+ * using safe values for the parameters of the endpoints provided by the {@link QueryController}.
+ *
+ * @author Benedikt Full
+ */
 @RequestMapping("api")
 @RestController
 public class ModelController {

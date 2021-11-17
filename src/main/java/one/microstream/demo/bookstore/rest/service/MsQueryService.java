@@ -11,10 +11,12 @@ import one.microstream.demo.bookstore.data.Employee;
 import one.microstream.demo.bookstore.data.Shop;
 import one.microstream.demo.bookstore.rest.data.converter.AddressConverter;
 import one.microstream.demo.bookstore.rest.data.converter.BookConverter;
+import one.microstream.demo.bookstore.rest.data.converter.BookSalesConverter;
 import one.microstream.demo.bookstore.rest.data.converter.CustomerConverter;
 import one.microstream.demo.bookstore.rest.data.converter.EmployeeConverter;
 import one.microstream.demo.bookstore.rest.data.converter.PurchaseConverter;
 import one.microstream.demo.bookstore.rest.data.transfer.BookRepresentation;
+import one.microstream.demo.bookstore.rest.data.transfer.BookSalesRepresentation;
 import one.microstream.demo.bookstore.rest.data.transfer.CustomerRepresentation;
 import one.microstream.demo.bookstore.rest.data.transfer.EmployeeRepresentation;
 import one.microstream.demo.bookstore.rest.data.transfer.PurchaseRepresentation;
@@ -22,6 +24,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * {@link QueryService} implementation that uses MicroStream-based persistence as backing
+ * persistence approach.
+ *
+ * @see JpaQueryService
+ * @author Benedikt Full
+ */
 @Service
 public class MsQueryService extends BaseQueryService {
 
@@ -37,6 +46,7 @@ public class MsQueryService extends BaseQueryService {
   ModelMapper configureModelMapper(ModelMapper mapper) {
     mapper.addConverter(new AddressConverter());
     mapper.addConverter(new BookConverter());
+    mapper.addConverter(new BookSalesConverter());
     mapper.addConverter(new CustomerConverter());
     mapper.addConverter(new EmployeeConverter());
     mapper.addConverter(new PurchaseConverter());
@@ -91,10 +101,10 @@ public class MsQueryService extends BaseQueryService {
   }
 
   @Override
-  public Collection<BookRepresentation> bestsellers(String country, int year) {
+  public Collection<BookSalesRepresentation> bookSales(String country, int year) {
     Country c = getCountry(country);
     return data.purchases().bestSellerList(year, c).stream()
-        .map(b -> map(b.book(), BookRepresentation.class))
+        .map(b -> map(b, BookSalesRepresentation.class))
         .collect(Collectors.toList());
   }
 

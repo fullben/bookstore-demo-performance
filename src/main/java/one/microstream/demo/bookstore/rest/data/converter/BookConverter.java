@@ -9,7 +9,10 @@ public class BookConverter implements Converter<Book, BookRepresentation> {
 
   @Override
   public BookRepresentation convert(MappingContext<Book, BookRepresentation> mappingContext) {
-    Book b = mappingContext.getSource();
+    return toRepresentation(mappingContext.getSource());
+  }
+
+  public static BookRepresentation toRepresentation(Book b) {
     BookRepresentation r = new BookRepresentation();
     r.setAuthor(b.author().name());
     r.setGenre(b.genre().name());

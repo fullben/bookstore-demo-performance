@@ -2,6 +2,7 @@ package one.microstream.demo.bookstore.rest.api;
 
 import java.util.Collection;
 import one.microstream.demo.bookstore.rest.data.transfer.BookRepresentation;
+import one.microstream.demo.bookstore.rest.data.transfer.BookSalesRepresentation;
 import one.microstream.demo.bookstore.rest.data.transfer.CustomerRepresentation;
 import one.microstream.demo.bookstore.rest.data.transfer.EmployeeRepresentation;
 import one.microstream.demo.bookstore.rest.data.transfer.PurchaseRepresentation;
@@ -15,6 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller managing the API endpoints providing access to the queries offered by the application.
+ *
+ * @author Benedikt Full
+ */
 @RequestMapping("api")
 @RestController
 public class QueryController {
@@ -63,12 +69,12 @@ public class QueryController {
     return queryService(mode).revenueOfShop(shopName, year);
   }
 
-  @GetMapping(value = "queries/bestsellers", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public Collection<BookRepresentation> bestsellersForYearAndCountry(
+  @GetMapping(value = "queries/book-sales", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  public Collection<BookSalesRepresentation> bookSalesForYearAndCountry(
       @RequestParam(name = "mode", required = false, defaultValue = "ms") String mode,
       @RequestParam(name = "country") String country,
       @RequestParam(name = "year") int year) {
-    return queryService(mode).bestsellers(country, year);
+    return queryService(mode).bookSales(country, year);
   }
 
   @GetMapping(
