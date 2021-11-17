@@ -59,7 +59,10 @@ public class JpaQueryService extends BaseQueryService {
   @Override
   public Collection<BookRepresentation> booksByTitleAndCountry(String title, String country) {
     CountryEntity countryEntity =
-        repositories.countryRepository().findByCode(country).orElseThrow();
+        repositories
+            .countryRepository()
+            .findByCode(country)
+            .orElseThrow(() -> new IllegalArgumentException("No country for code: " + country));
     return repositories
         .bookRepository()
         .findByTitleLikeAndAuthorAddressCityStateCountry(title, countryEntity)
@@ -120,7 +123,10 @@ public class JpaQueryService extends BaseQueryService {
         .collect(Collectors.toList());
   }
 
-  private CountryEntity getCountry(String name) {
-    return repositories.countryRepository().findByCode(name.toUpperCase(Locale.ROOT)).orElseThrow();
+  private CountryEntity getCountry(String country) {
+    return repositories
+        .countryRepository()
+        .findByCode(country.toUpperCase(Locale.ROOT))
+        .orElseThrow(() -> new IllegalArgumentException("No country for code: " + country));
   }
 }

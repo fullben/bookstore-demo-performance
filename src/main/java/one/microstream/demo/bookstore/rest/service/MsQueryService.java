@@ -19,6 +19,7 @@ import one.microstream.demo.bookstore.rest.data.transfer.CustomerRepresentation;
 import one.microstream.demo.bookstore.rest.data.transfer.EmployeeRepresentation;
 import one.microstream.demo.bookstore.rest.data.transfer.PurchaseRepresentation;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,9 +27,10 @@ public class MsQueryService extends BaseQueryService {
 
   private final Data data;
 
-  public MsQueryService() {
+  @Autowired
+  public MsQueryService(BookStoreDemo bookStoreDemo) {
     super();
-    this.data = BookStoreDemo.getInstance().data();
+    this.data = bookStoreDemo.data();
   }
 
   @Override
@@ -118,6 +120,7 @@ public class MsQueryService extends BaseQueryService {
                     .map(s -> s.address().city().state().country())
                     .filter(c -> c.code().equals(code))
                     .findAny()
-                    .orElseThrow());
+                    .orElseThrow(
+                        () -> new IllegalArgumentException("No country for code: " + country)));
   }
 }
