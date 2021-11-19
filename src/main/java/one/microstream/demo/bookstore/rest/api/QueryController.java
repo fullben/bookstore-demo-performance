@@ -24,10 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RequestMapping("api")
 @RestController
-public class QueryController {
+public class QueryController extends ModeBasedController {
 
-  private static final String MODE_MS = "ms";
-  private static final String MODE_JPA = "jpa";
   private final MsQueryService msQueryService;
   private final JpaQueryService jpaQueryService;
 
@@ -39,7 +37,7 @@ public class QueryController {
 
   @GetMapping(value = "queries/customers-page", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public ResponseEntity<Collection<CustomerRepresentation>> customersPaged(
-      @RequestParam(name = "mode", required = false, defaultValue = "ms") String mode,
+      @RequestParam(name = "mode", required = false, defaultValue = MODE_MS) String mode,
       @RequestParam(name = "page") int page) {
     final QueryService queryService = selectQueryService(mode);
     return ApiResponse.ok()
@@ -49,7 +47,7 @@ public class QueryController {
 
   @GetMapping(value = "queries/books-by-title", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public ResponseEntity<Collection<BookRepresentation>> booksByTitleAndCountry(
-      @RequestParam(name = "mode", required = false, defaultValue = "ms") String mode,
+      @RequestParam(name = "mode", required = false, defaultValue = MODE_MS) String mode,
       @RequestParam(name = "title") String title,
       @RequestParam(name = "country") String country) {
     final QueryService queryService = selectQueryService(mode);
@@ -62,7 +60,7 @@ public class QueryController {
       value = "queries/books-in-price-range",
       produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public ResponseEntity<Collection<BookRepresentation>> booksInPriceRange(
-      @RequestParam(name = "mode", required = false, defaultValue = "ms") String mode,
+      @RequestParam(name = "mode", required = false, defaultValue = MODE_MS) String mode,
       @RequestParam(name = "min") int min,
       @RequestParam(name = "max") int max) {
     final QueryService queryService = selectQueryService(mode);
@@ -73,7 +71,7 @@ public class QueryController {
 
   @GetMapping(value = "queries/shop-revenue", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public ResponseEntity<Double> revenueOfShopInYear(
-      @RequestParam(name = "mode", required = false, defaultValue = "ms") String mode,
+      @RequestParam(name = "mode", required = false, defaultValue = MODE_MS) String mode,
       @RequestParam(name = "shop") String shopName,
       @RequestParam(name = "year") int year) {
     final QueryService queryService = selectQueryService(mode);
@@ -84,7 +82,7 @@ public class QueryController {
 
   @GetMapping(value = "queries/book-sales", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public ResponseEntity<Collection<BookSalesRepresentation>> bookSalesForYearAndCountry(
-      @RequestParam(name = "mode", required = false, defaultValue = "ms") String mode,
+      @RequestParam(name = "mode", required = false, defaultValue = MODE_MS) String mode,
       @RequestParam(name = "country") String country,
       @RequestParam(name = "year") int year) {
     final QueryService queryService = selectQueryService(mode);
@@ -97,7 +95,7 @@ public class QueryController {
       value = "queries/employee-of-the-year",
       produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public ResponseEntity<EmployeeRepresentation> employeeOfTheYearInCountry(
-      @RequestParam(name = "mode", required = false, defaultValue = "ms") String mode,
+      @RequestParam(name = "mode", required = false, defaultValue = MODE_MS) String mode,
       @RequestParam(name = "year") int year,
       @RequestParam(name = "country") String country) {
     final QueryService queryService = selectQueryService(mode);
@@ -110,7 +108,7 @@ public class QueryController {
       value = "queries/foreigner-purchases",
       produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public ResponseEntity<Collection<PurchaseRepresentation>> purchasesOfForeignersInCountryAndYear(
-      @RequestParam(name = "mode", required = false, defaultValue = "ms") String mode,
+      @RequestParam(name = "mode", required = false, defaultValue = MODE_MS) String mode,
       @RequestParam(name = "country") String country,
       @RequestParam(name = "year") int year) {
     final QueryService queryService = selectQueryService(mode);
@@ -128,24 +126,5 @@ public class QueryController {
     } else {
       throw new IllegalStateException();
     }
-  }
-
-  private String requireValidMode(String mode) {
-    if (!isValidMode(mode)) {
-      throw new InvalidRequestParamException("mode");
-    }
-    return mode;
-  }
-
-  private boolean isValidMode(String mode) {
-    return MODE_MS.equals(mode) || MODE_JPA.equals(mode);
-  }
-
-  private boolean isMsMode(String mode) {
-    return MODE_MS.equals(mode);
-  }
-
-  private boolean isJpaMode(String mode) {
-    return MODE_JPA.equals(mode);
   }
 }
