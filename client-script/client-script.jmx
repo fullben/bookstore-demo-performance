@@ -30,34 +30,34 @@
           <collectionProp name="Arguments.arguments">
             <elementProp name="server.url" elementType="Argument">
               <stringProp name="Argument.name">server.url</stringProp>
-              <stringProp name="Argument.value">localhost</stringProp>
+              <stringProp name="Argument.value">${__P(url, localhost)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="server.port" elementType="Argument">
               <stringProp name="Argument.name">server.port</stringProp>
-              <stringProp name="Argument.value">80</stringProp>
+              <stringProp name="Argument.value">${__P(port, 80)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="server.protocol" elementType="Argument">
               <stringProp name="Argument.name">server.protocol</stringProp>
-              <stringProp name="Argument.value">http</stringProp>
+              <stringProp name="Argument.value">${__P(protocol, http)}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="query.mode" elementType="Argument">
               <stringProp name="Argument.name">query.mode</stringProp>
-              <stringProp name="Argument.value">ms</stringProp>
+              <stringProp name="Argument.value">${__P(mode, ms)}</stringProp>
               <stringProp name="Argument.desc">Whether to use JPA- or MicroStream-based persistence on the server for fulfilling the query</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="query.duration" elementType="Argument">
               <stringProp name="Argument.name">query.duration</stringProp>
-              <stringProp name="Argument.value">1800</stringProp>
+              <stringProp name="Argument.value">${__P(duration, 1800)}</stringProp>
               <stringProp name="Argument.desc">Duration (in seconds) for which queries will be executed</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="query.clients" elementType="Argument">
               <stringProp name="Argument.name">query.clients</stringProp>
-              <stringProp name="Argument.value">10</stringProp>
+              <stringProp name="Argument.value">${__P(clients, 10)}</stringProp>
               <stringProp name="Argument.desc">Number of threads used for running queries</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>

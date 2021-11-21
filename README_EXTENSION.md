@@ -15,14 +15,16 @@ The directory `client-script` contains the relevant JMeter files. A `Dockerfile`
 ### JMeter Script
 
 The script is meant for executing the 7 read-only queries defined by the application for a specific persistence implementation (either MicroStream-based or JPA-based) for a specified amount of time.
-In order to achieve this, the script has various configuration properties, defined in the block *User Defined Variables*:
+In order to achieve this, the script has various configuration properties, defined in the block *User Defined Variables*. You can set the values there or alternatively use the appropriate command-line arguments.
 
-* `server.url`: The url of the targeted server, excluding port and protocol, e.g. `localhost` for a server running on the same machine.
-* `server.port`: The port of the targeted server, usually 80.
-* `server.protocol`: The protocol of the targeted server, usually either `http` or `https`.
-* `query.mode`: The persistence implementation to be used for the queries, `ms` for MicroStream, `jpa` for JPA
-* `query.duration`: The duration for which queries will be executed in seconds.
-* `query.clients`: The number of threads used for executing queries.
+User Defined Variable|Command-Line Argument|Default Value|Description
+---|---|---|---
+`server.url`|`-Jurl`|`localhost`|The url of the targeted server, excluding port and protocol, e.g. `localhost` for a server running on the same machine.
+`server.port`|`-Jport`|80|The port of the targeted server, usually 80.
+`server.protocol`|`-Jprotocol`|http|The protocol of the targeted server, usually either `http` or `https`.
+`query.mode`|`-Jmode`|ms|The persistence implementation to be used for the queries, `ms` for MicroStream, `jpa` for JPA.
+`query.duration`|`-Jduration`|1800|The duration for which queries will be executed in seconds.
+`query.clients`|`-Jclients`|10|The number of threads used for executing queries.
 
 Open a terminal and execute the command `jmeter -Jsample_variables=rduration -n -t client-script.jmx -l results.jtl` to run the test in JMeter's CLI-mode. This will execute the testplan defined in `client-script.jmx`. The results will be written as CSV data to the `results.jtl` file.
 
