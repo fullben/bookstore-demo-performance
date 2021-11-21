@@ -62,7 +62,7 @@ public class JpaModelService implements ModelService {
   @Override
   public CustomerMetadataRepresentation getCustomerMetadata(int pageSize) {
     if (pageSize < 1) {
-      throw new IllegalArgumentException();
+      throw new ResourceNotFoundException("Page size must be greater than zero");
     }
     CustomerMetadataRepresentation metaData = new CustomerMetadataRepresentation();
     metaData.setTotal((int) customerRepository.count());

@@ -72,7 +72,8 @@ public class JpaQueryService extends BaseQueryService {
         repositories
             .countryRepository()
             .findByCode(countryCode)
-            .orElseThrow(() -> new IllegalArgumentException("No country for code: " + countryCode));
+            .orElseThrow(
+                () -> new ResourceNotFoundException("No country for code: " + countryCode));
     return repositories
         .bookRepository()
         .findByTitleLikeAndAuthorAddressCityStateCountry(title, countryEntity)
@@ -102,7 +103,7 @@ public class JpaQueryService extends BaseQueryService {
             .shopRepository()
             .findByName(shopName)
             .orElseThrow(
-                () -> new IllegalArgumentException("No shop with name: \"" + shopName + "\""));
+                () -> new ResourceNotFoundException("No shop with name: \"" + shopName + "\""));
     return repositories.purchaseItemRepository().revenueOfShopInYear(shop, year);
   }
 
@@ -140,6 +141,6 @@ public class JpaQueryService extends BaseQueryService {
     return repositories
         .countryRepository()
         .findByCode(countryCode.toUpperCase(Locale.ROOT))
-        .orElseThrow(() -> new IllegalArgumentException("No country for code: " + countryCode));
+        .orElseThrow(() -> new ResourceNotFoundException("No country for code: " + countryCode));
   }
 }

@@ -94,7 +94,7 @@ public class MsQueryService extends BaseQueryService {
   public double revenueOfShop(String shopName, int year) {
     final Shop shop = data.shops().ofName(shopName);
     if (shop == null) {
-      throw new IllegalArgumentException();
+      throw new ResourceNotFoundException("No shop with name: \"" + shopName + "\"");
     }
     MonetaryAmount revenue = data.purchases().revenueOfShopInYear(shop, year);
     return deriveDouble(revenue);
@@ -131,6 +131,7 @@ public class MsQueryService extends BaseQueryService {
                     .filter(c -> c.code().equals(code))
                     .findAny()
                     .orElseThrow(
-                        () -> new IllegalArgumentException("No country for code: " + countryCode)));
+                        () ->
+                            new ResourceNotFoundException("No country for code: " + countryCode)));
   }
 }

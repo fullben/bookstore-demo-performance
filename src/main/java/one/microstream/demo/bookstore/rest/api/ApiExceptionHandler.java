@@ -1,5 +1,6 @@
 package one.microstream.demo.bookstore.rest.api;
 
+import one.microstream.demo.bookstore.rest.service.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,5 +26,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         new HttpHeaders(),
         HttpStatus.BAD_REQUEST,
         request);
+  }
+
+  @ExceptionHandler(value = {ResourceNotFoundException.class})
+  protected ResponseEntity<Object> handleConflict(
+      ResourceNotFoundException ex, WebRequest request) {
+    return handleExceptionInternal(
+        ex, ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
   }
 }
