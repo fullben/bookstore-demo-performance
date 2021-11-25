@@ -76,7 +76,7 @@ public class JpaQueryService extends BaseQueryService {
                 () -> new ResourceNotFoundException("No country for code: " + countryCode));
     return repositories
         .bookRepository()
-        .findByTitleLikeAndAuthorAddressCityStateCountry(title, countryEntity)
+        .findByTitleContainingIgnoreCaseAndAuthorAddressCityStateCountry(title, countryEntity)
         .stream()
         .map(b -> map(b, BookRepresentation.class))
         .collect(Collectors.toList());

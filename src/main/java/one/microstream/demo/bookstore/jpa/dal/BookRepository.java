@@ -12,9 +12,9 @@ public interface BookRepository extends BaseRepository<BookEntity> {
 
   List<BookEntity> findByTitleLike(String title);
 
-  List<BookEntity> findByTitleLikeAndAuthorAddressCityStateCountry(
+  List<BookEntity> findByTitleContainingIgnoreCaseAndAuthorAddressCityStateCountry(
       String title, CountryEntity country);
 
   List<BookEntity> findByRetailPriceGreaterThanEqualAndRetailPriceLessThan(
-      MonetaryAmount minRetailPriceIncl, MonetaryAmount maxReatailPriceExcl);
+      MonetaryAmount minRetailPriceIncl, MonetaryAmount maxRetailPriceExcl);
 }

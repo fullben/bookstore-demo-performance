@@ -254,7 +254,7 @@ class Query {
                                                         () ->
                                                             repositories
                                                                 .bookRepository()
-                                                                .findByTitleLikeAndAuthorAddressCityStateCountry(
+                                                                .findByTitleContainingIgnoreCaseAndAuthorAddressCityStateCountry(
                                                                     pattern, countryEntity)))))));
   }
 
