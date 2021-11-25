@@ -30,26 +30,21 @@ public class Initializer implements HasLogger {
   }
 
   private void migrateData() {
-    DataMigrator dataMigrator = null;
+    DataMigrator dataMigrator;
     final String jpaDataMigrationStrategy =
         this.bookStoreDemo.getDemoConfiguration().jpaDataMigrationStrategy();
     switch (jpaDataMigrationStrategy) {
       case "batch_insert":
         dataMigrator = DataMigrator.BatchInsert(this.bookStoreDemo, this.repositories);
-
         break;
-
       case "sql_file":
         dataMigrator = DataMigrator.SqlFile(this.bookStoreDemo, this.repositories);
-
         break;
-    }
-
-    if (dataMigrator == null) {
-      throw new IllegalArgumentException(
-          "Invalid data migration strategy: "
-              + jpaDataMigrationStrategy
-              + ", valid options are batch_insert or sql_file");
+      default:
+        throw new IllegalArgumentException(
+            "Invalid data migration strategy: "
+                + jpaDataMigrationStrategy
+                + ", valid options are batch_insert or sql_file");
     }
 
     this.logger()

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -121,7 +122,7 @@ public interface DataMigrator {
     }
   }
 
-  public static class SqlFile extends Abstract {
+  class SqlFile extends Abstract {
     static class BatchDumper<T> implements Dumper<T> {
       private final Iterator<Entry<T, Long>> iterator;
       private final int size;
@@ -197,7 +198,7 @@ public interface DataMigrator {
                                   this.bookStoreDemo.getDemoConfiguration().dataDir(),
                                   "bookstoredemo.sql")
                               .toFile()),
-                      "UTF-8"),
+                      StandardCharsets.UTF_8),
                   (int) ByteUnit.MiB.toBytes(100) // buffer size
                   ));
 
@@ -326,12 +327,7 @@ public interface DataMigrator {
 
       this.dump(
           this.repositories.genreRepository(),
-          new BatchDumper<>(
-              genres,
-              2,
-              (record, entity) -> {
-                record[1] = entity.name();
-              }));
+          new BatchDumper<>(genres, 2, (record, entity) -> record[1] = entity.name()));
 
       final EntityIdMap<Author> authors =
           data.books().computeAuthors(stream -> stream.collect(toEntityIdMap()));
@@ -365,11 +361,7 @@ public interface DataMigrator {
       this.dump(
           this.repositories.languageRepository(),
           new BatchDumper<>(
-              languages,
-              2,
-              (record, entity) -> {
-                record[1] = entity.locale().toLanguageTag();
-              }));
+              languages, 2, (record, entity) -> record[1] = entity.locale().toLanguageTag()));
 
       final EntityIdMap<Book> books =
           data.books().compute(stream -> stream.collect(toEntityIdMap()));
@@ -743,10 +735,7 @@ public interface DataMigrator {
       this.batchInsert(
           this.repositories.languageRepository(),
           new BatchInserter<>(
-              languages,
-              (ps, entity) -> {
-                ps.setString(2, entity.locale().toLanguageTag());
-              }));
+              languages, (ps, entity) -> ps.setString(2, entity.locale().toLanguageTag())));
 
       final EntityIdMap<Book> books =
           data.books().compute(stream -> stream.collect(toEntityIdMap()));
