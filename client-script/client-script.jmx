@@ -278,7 +278,7 @@ vars.put(&quot;currPage&quot;, currPage)
                 <hashTree/>
                 <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Processing duration extractor" enabled="true">
                   <stringProp name="RegexExtractor.useHeaders">true</stringProp>
-                  <stringProp name="RegexExtractor.refname">rduration</stringProp>
+                  <stringProp name="RegexExtractor.refname">processingNs</stringProp>
                   <stringProp name="RegexExtractor.regex">Processing-Ns:\s+(.+)</stringProp>
                   <stringProp name="RegexExtractor.template">$1$</stringProp>
                   <stringProp name="RegexExtractor.default">-1</stringProp>
@@ -347,7 +347,7 @@ vars.put(&quot;currCountry&quot;, randomCountryCode)
                 <hashTree/>
                 <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Processing duration extractor" enabled="true">
                   <stringProp name="RegexExtractor.useHeaders">true</stringProp>
-                  <stringProp name="RegexExtractor.refname">rduration</stringProp>
+                  <stringProp name="RegexExtractor.refname">processingNs</stringProp>
                   <stringProp name="RegexExtractor.regex">Processing-Ns:\s+(.+)</stringProp>
                   <stringProp name="RegexExtractor.template">$1$</stringProp>
                   <stringProp name="RegexExtractor.default">-1</stringProp>
@@ -415,7 +415,7 @@ vars.put(&quot;currMax&quot;, maxPrice + &quot;&quot;)
                 <hashTree/>
                 <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Processing duration extractor" enabled="true">
                   <stringProp name="RegexExtractor.useHeaders">true</stringProp>
-                  <stringProp name="RegexExtractor.refname">rduration</stringProp>
+                  <stringProp name="RegexExtractor.refname">processingNs</stringProp>
                   <stringProp name="RegexExtractor.regex">Processing-Ns:\s+(.+)</stringProp>
                   <stringProp name="RegexExtractor.template">$1$</stringProp>
                   <stringProp name="RegexExtractor.default">-1</stringProp>
@@ -488,7 +488,7 @@ vars.put(&quot;currYear&quot;, randomYear)
                 <hashTree/>
                 <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Processing duration extractor" enabled="true">
                   <stringProp name="RegexExtractor.useHeaders">true</stringProp>
-                  <stringProp name="RegexExtractor.refname">rduration</stringProp>
+                  <stringProp name="RegexExtractor.refname">processingNs</stringProp>
                   <stringProp name="RegexExtractor.regex">Processing-Ns:\s+(.+)</stringProp>
                   <stringProp name="RegexExtractor.template">$1$</stringProp>
                   <stringProp name="RegexExtractor.default">-1</stringProp>
@@ -561,7 +561,7 @@ vars.put(&quot;currYear&quot;, randomYear)
                 <hashTree/>
                 <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Processing duration extractor" enabled="true">
                   <stringProp name="RegexExtractor.useHeaders">true</stringProp>
-                  <stringProp name="RegexExtractor.refname">rduration</stringProp>
+                  <stringProp name="RegexExtractor.refname">processingNs</stringProp>
                   <stringProp name="RegexExtractor.regex">Processing-Ns:\s+(.+)</stringProp>
                   <stringProp name="RegexExtractor.template">$1$</stringProp>
                   <stringProp name="RegexExtractor.default">-1</stringProp>
@@ -634,7 +634,7 @@ vars.put(&quot;currYear&quot;, randomYear)
                 <hashTree/>
                 <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Processing duration extractor" enabled="true">
                   <stringProp name="RegexExtractor.useHeaders">true</stringProp>
-                  <stringProp name="RegexExtractor.refname">rduration</stringProp>
+                  <stringProp name="RegexExtractor.refname">processingNs</stringProp>
                   <stringProp name="RegexExtractor.regex">Processing-Ns:\s+(.+)</stringProp>
                   <stringProp name="RegexExtractor.template">$1$</stringProp>
                   <stringProp name="RegexExtractor.default">-1</stringProp>
@@ -707,7 +707,7 @@ vars.put(&quot;currYear&quot;, randomYear)
                 <hashTree/>
                 <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Processing duration extractor" enabled="true">
                   <stringProp name="RegexExtractor.useHeaders">true</stringProp>
-                  <stringProp name="RegexExtractor.refname">rduration</stringProp>
+                  <stringProp name="RegexExtractor.refname">processingNs</stringProp>
                   <stringProp name="RegexExtractor.regex">Processing-Ns:\s+(.+)</stringProp>
                   <stringProp name="RegexExtractor.template">$1$</stringProp>
                   <stringProp name="RegexExtractor.default">-1</stringProp>
