@@ -33,7 +33,7 @@ User Defined Variable|Command-Line Argument|Default Value|Description
 `server.protocol`|`-Jprotocol`|`http`|The protocol of the targeted server, usually either `http` or `https`.
 `query.mode`|`-Jmode`|`ms`|The persistence implementation to be used for the queries, `ms` for MicroStream, `jpa` for JPA.
 `query.duration`|`-Jduration`|1800|The duration for which queries will be executed in seconds.
-`query.clients`|`-Jclients`|10|The number of threads used for executing queries.
+`query.clients`|`-Jclients`|10|The number of threads used for executing queries. Be aware that depending on the number of clients you want to simulate, you may also need to adjust the `spring.datasource.hikari.maximumPoolSize` property of the server in order to avoid erroring out. To avoid this, the value of that property should be equal to or greater than the client count.
 
 Open a terminal and execute the command `jmeter -Jsample_variables=processingNs -n -t client-script.jmx -l results.jtl` to run the test in JMeter's CLI-mode. This will execute the test plan defined in `client-script.jmx`. The results will be written as CSV data to the `results.jtl` file.
 
