@@ -11,7 +11,7 @@
 
 	<groupId>one.microstream</groupId>
 	<artifactId>bookstore-demo-performance</artifactId>
-	<version>1.1.0</version>
+	<version>1.1.1</version>
 
 	<name>MicroStream BookStore Performance Demo</name>
 
