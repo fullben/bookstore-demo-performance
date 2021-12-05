@@ -45,7 +45,7 @@ public class JpaModelService implements ModelService {
   @Override
   public List<String> getAllCountryCodes() {
     return StreamSupport.stream(countryRepository.findAll().spliterator(), false)
-        .map(CountryEntity::getName)
+        .map(CountryEntity::getCode)
         .collect(Collectors.toList());
   }
 
